@@ -1,0 +1,13 @@
+v 4
+file . "reg_16bits.vhd" "8ab31871193c904446f5e0a3d9797252304fccc0" "20260925183530.943":
+  entity reg_16bits at 1( 0) + 0 on 19;
+  architecture a_reg_16bits of reg_16bits at 14( 317) + 0 on 20;
+file . "ULA_tb.vhd" "e241e2ed137390412dd9a51343d10b5807753e28" "20260924001834.640":
+  entity ula_tb at 1( 0) + 0 on 17;
+  architecture arq_ula_tb of ula_tb at 8( 100) + 0 on 18;
+file . "ULA.vhd" "b17e0acdc33f051a6b41a15c39d297527db47a80" "20260923203004.682":
+  entity ula at 1( 0) + 0 on 13;
+  architecture arq_ula of ula at 16( 308) + 0 on 14;
+file . "reg_16bits_tb.vhd" "73b5f93e23039b18da1d337e4a090f949a8f6520" "20260925192748.269":
+  entity reg_16bits_tb at 1( 0) + 0 on 23;
+  architecture arq_reg_16bits_tb of reg_16bits_tb at 8( 107) + 0 on 24;
