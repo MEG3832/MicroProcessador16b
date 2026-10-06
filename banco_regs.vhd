@@ -2,6 +2,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+--notas:
+-- **rst**: zera todos os registradores ao mesmo tempo
+-- **wr_en_br**: pega o valor do data_wr e salva no registrador indicado pelo reg_wr 
+-- se este pino estiver em '1' no momento em que o clock der um pulso de subida
+-- **data_wr**: valor a ser escrito no registrador selecionado
+-- **reg_read**: identifica em qual registrador estamos lendo
+-- **reg_wr**: identifica em qual registrador estamos escrevendo
+-- **data_reg**: saída do registrador q selecionamos pelo reg_read
+
 entity banco_regs is
     port (
         wr_en_br: in std_logic;
