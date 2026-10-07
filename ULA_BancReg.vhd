@@ -10,7 +10,7 @@ entity ULA_BancReg is
             rst_BR: in std_logic;
             rst_ACC: in unsigned(1 downto 0); -- 2 bits pra representar os 2 acumuladores
 
-            sel_OP_ULA: in unsigned(2 downto 0); -- a ula vai ter 6 operacoes
+            sel_OP_ULA: in unsigned(1 downto 0); -- a ula vai ter 6 operacoes
             load_cte: in unsigned(15 downto 0); -- sinal q vai para os MUXes pra ver se vamos carregar uma cte
             sel_mux_acc_in: in unsigned (1 downto 0); -- mux para escoler se o resultado para o acc é da ULA, do load cte ou do BR
             sel_mux_br: in std_logic; -- escole se vamos carregar cte ou fazer uma copia (mov)
@@ -103,7 +103,7 @@ architecture a_ULA_BancReg of ULA_BancReg is
                                data_in => acc_in,
                                data_out => acc2_out);
 
-    ula: ULA port map (entrada_A => br_ula,
+    inst_ula: ULA port map (entrada_A => br_ula,
                        entrada_B => acc_ula,
                        select_op => sel_OP_ULA,
                        saida => ula_out);
