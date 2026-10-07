@@ -1,4 +1,10 @@
 v 4
+file . "mux_3in.vhd" "fb7e903a7cb045f104701e17a7f3d6f64c300fc0" "20261007135542.376":
+  entity mux_3in at 1( 0) + 0 on 51;
+  architecture arq_mux of mux_3in at 15( 370) + 0 on 52;
+file . "mux_2in.vhd" "4e7c72c95c5e43fa3407c2e573ecb36554b447ec" "20261007135140.441":
+  entity mux_2in at 1( 0) + 0 on 47;
+  architecture arq_mux of mux_2in at 14( 312) + 0 on 48;
 file . "banco_regs_tb.vhd" "37284c57c58e60a850ddacbba00ae9c05015c4ce" "20261005184012.030":
   entity banco_regs_tb at 1( 0) + 0 on 39;
   architecture a_banco_regs_tb of banco_regs_tb at 8( 107) + 0 on 40;
@@ -17,3 +23,9 @@ file . "reg_16bits_tb.vhd" "73b5f93e23039b18da1d337e4a090f949a8f6520" "202610051
 file . "banco_regs.vhd" "7e9d653be44cc6b6fc997042c17ccce3ae770b93" "20261005183436.136":
   entity banco_regs at 1( 0) + 0 on 35;
   architecture a_banco_regs of banco_regs at 22( 524) + 0 on 36;
+file . "mux.vhd" "caba39072cca3722dde13ba6a5f40cdc9ce1d3b0" "20261007004641.431":
+  entity mux at 1( 0) + 0 on 41;
+  architecture arq_mux of mux at 14( 308) + 0 on 42;
+file . "mux_2in_tb.vhd" "2a9b5f2bc239903c3ed0c51d32e44ccc64d2f919" "20261007135233.174":
+  entity mux_2in_tb at 1( 0) + 0 on 49;
+  architecture arq_mux_2in_tb of mux_2in_tb at 8( 104) + 0 on 50;
