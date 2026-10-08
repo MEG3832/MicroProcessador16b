@@ -8,7 +8,6 @@ entity ULA_BancReg is
             wr_en_ACC1, wr_en_ACC2, rst_ACC1, rst_ACC2: in std_logic; -- vem da UC
             wr_en_BR: in std_logic; -- vem da UC
             rst_BR: in std_logic;
-            rst_ACC: in unsigned(1 downto 0); -- 2 bits pra representar os 2 acumuladores
 
             sel_OP_ULA: in unsigned(1 downto 0); -- a ula vai ter 6 operacoes
             load_cte: in unsigned(15 downto 0); -- sinal q vai para os MUXes pra ver se vamos carregar uma cte
