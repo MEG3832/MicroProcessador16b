@@ -1,49 +1,52 @@
 v 4
-file . "flipflopT_tb.vhd" "36b9c2000885a7a1241d2b74e9c0c8180e376e36" "20261018210619.050":
-  entity flipflopt_tb at 1( 0) + 0 on 91;
-  architecture arq_flipflopt_tb of flipflopt_tb at 8( 99) + 0 on 92;
-file . "ROM_tb.vhd" "49f207bfe39aa4529cac44f34792c074b44e28a0" "20261018203917.377":
-  entity rom_tb at 1( 0) + 0 on 87;
-  architecture arq_rom_tb of rom_tb at 8( 93) + 0 on 88;
-file . "ULA_BancReg_tb.vhd" "1d7ff3948fda595eadabbe63b37810a5770e2dd7" "20261008015008.011":
-  entity ula_bancreg_tb at 1( 0) + 0 on 83;
-  architecture a_ula_bancreg_tb of ula_bancreg_tb at 8( 101) + 0 on 84;
-file . "mux_3in.vhd" "63893b454b00b3c8bc63c323b31fbdb6cd098242" "20261008002638.375":
-  entity mux_3in at 1( 0) + 0 on 75;
-  architecture arq_mux of mux_3in at 15( 356) + 0 on 76;
-file . "mux_2in.vhd" "389c5f2675d36e9cb9e419598d8f060e8836f854" "20261008002631.217":
-  entity mux_2in at 1( 0) + 0 on 73;
-  architecture arq_mux of mux_2in at 14( 299) + 0 on 74;
-file . "banco_regs_tb.vhd" "37284c57c58e60a850ddacbba00ae9c05015c4ce" "20261005184012.030":
-  entity banco_regs_tb at 1( 0) + 0 on 39;
-  architecture a_banco_regs_tb of banco_regs_tb at 8( 107) + 0 on 40;
-file . "reg_16bits.vhd" "0d8abaa3214c0f771737cf6bac81699ba15a9b61" "20261008004315.233":
-  entity reg_16bits at 1( 0) + 0 on 77;
-  architecture a_reg_16bits of reg_16bits at 14( 304) + 0 on 78;
-file . "ULA_tb.vhd" "e241e2ed137390412dd9a51343d10b5807753e28" "20260924001834.640":
-  entity ula_tb at 1( 0) + 0 on 17;
-  architecture arq_ula_tb of ula_tb at 8( 100) + 0 on 18;
-file . "ULA.vhd" "9a567b46acee2dae6adeb32247196b74aaddab49" "20261008002548.796":
-  entity ula at 1( 0) + 0 on 69;
-  architecture arq_ula of ula at 16( 293) + 0 on 70;
-file . "reg_16bits_tb.vhd" "73b5f93e23039b18da1d337e4a090f949a8f6520" "20261005183237.649":
-  entity reg_16bits_tb at 1( 0) + 0 on 33;
-  architecture arq_reg_16bits_tb of reg_16bits_tb at 8( 107) + 0 on 34;
-file . "banco_regs.vhd" "a533d8d206c39c149ea49bcfbc6a6e089f16f829" "20261008002611.839":
-  entity banco_regs at 1( 0) + 0 on 71;
-  architecture a_banco_regs of banco_regs at 31( 992) + 0 on 72;
-file . "mux.vhd" "caba39072cca3722dde13ba6a5f40cdc9ce1d3b0" "20261007004641.431":
-  entity mux at 1( 0) + 0 on 41;
-  architecture arq_mux of mux at 14( 308) + 0 on 42;
-file . "mux_2in_tb.vhd" "2a9b5f2bc239903c3ed0c51d32e44ccc64d2f919" "20261007135233.174":
-  entity mux_2in_tb at 1( 0) + 0 on 49;
-  architecture arq_mux_2in_tb of mux_2in_tb at 8( 104) + 0 on 50;
-file . "ULA_BancReg.vhd" "924814bc9ca977e41196549489e0a20186b0cb2b" "20261008001728.658":
-  entity ula_bancreg at 1( 0) + 0 on 63;
-  architecture a_ula_bancreg of ula_bancreg at 30( 1392) + 0 on 64;
-file . "ROM.vhd" "ab26bd412cdec7c2ed368d5362515f9fecc987f7" "20261018203723.853":
-  entity rom at 1( 0) + 0 on 85;
-  architecture a_rom of rom at 9( 193) + 0 on 86;
+file . "contador.vhd" "250aa12c04d14b8bcdae6c69e23d9abe5e601e35" "20261018215024.174":
+  entity contador at 1( 0) + 0 on 93;
+  architecture a_contador of contador at 12( 287) + 0 on 94;
 file . "flipflopT.vhd" "944585d5a8640b618591a93aeb3032f0646d2cb8" "20261018210111.820":
   entity flipflopt at 1( 0) + 0 on 89;
   architecture a_flipflopt of flipflopt at 12( 209) + 0 on 90;
+file . "ROM.vhd" "ab26bd412cdec7c2ed368d5362515f9fecc987f7" "20261018203723.853":
+  entity rom at 1( 0) + 0 on 85;
+  architecture a_rom of rom at 9( 193) + 0 on 86;
+file . "ULA_BancReg.vhd" "924814bc9ca977e41196549489e0a20186b0cb2b" "20261008001728.658":
+  entity ula_bancreg at 1( 0) + 0 on 63;
+  architecture a_ula_bancreg of ula_bancreg at 30( 1392) + 0 on 64;
+file . "mux_2in_tb.vhd" "2a9b5f2bc239903c3ed0c51d32e44ccc64d2f919" "20261007135233.174":
+  entity mux_2in_tb at 1( 0) + 0 on 49;
+  architecture arq_mux_2in_tb of mux_2in_tb at 8( 104) + 0 on 50;
+file . "mux.vhd" "caba39072cca3722dde13ba6a5f40cdc9ce1d3b0" "20261007004641.431":
+  entity mux at 1( 0) + 0 on 41;
+  architecture arq_mux of mux at 14( 308) + 0 on 42;
+file . "banco_regs.vhd" "a533d8d206c39c149ea49bcfbc6a6e089f16f829" "20261008002611.839":
+  entity banco_regs at 1( 0) + 0 on 71;
+  architecture a_banco_regs of banco_regs at 31( 992) + 0 on 72;
+file . "reg_16bits_tb.vhd" "73b5f93e23039b18da1d337e4a090f949a8f6520" "20261005183237.649":
+  entity reg_16bits_tb at 1( 0) + 0 on 33;
+  architecture arq_reg_16bits_tb of reg_16bits_tb at 8( 107) + 0 on 34;
+file . "ULA.vhd" "9a567b46acee2dae6adeb32247196b74aaddab49" "20261008002548.796":
+  entity ula at 1( 0) + 0 on 69;
+  architecture arq_ula of ula at 16( 293) + 0 on 70;
+file . "ULA_tb.vhd" "e241e2ed137390412dd9a51343d10b5807753e28" "20260924001834.640":
+  entity ula_tb at 1( 0) + 0 on 17;
+  architecture arq_ula_tb of ula_tb at 8( 100) + 0 on 18;
+file . "reg_16bits.vhd" "0d8abaa3214c0f771737cf6bac81699ba15a9b61" "20261008004315.233":
+  entity reg_16bits at 1( 0) + 0 on 77;
+  architecture a_reg_16bits of reg_16bits at 14( 304) + 0 on 78;
+file . "banco_regs_tb.vhd" "37284c57c58e60a850ddacbba00ae9c05015c4ce" "20261005184012.030":
+  entity banco_regs_tb at 1( 0) + 0 on 39;
+  architecture a_banco_regs_tb of banco_regs_tb at 8( 107) + 0 on 40;
+file . "mux_2in.vhd" "389c5f2675d36e9cb9e419598d8f060e8836f854" "20261008002631.217":
+  entity mux_2in at 1( 0) + 0 on 73;
+  architecture arq_mux of mux_2in at 14( 299) + 0 on 74;
+file . "mux_3in.vhd" "63893b454b00b3c8bc63c323b31fbdb6cd098242" "20261008002638.375":
+  entity mux_3in at 1( 0) + 0 on 75;
+  architecture arq_mux of mux_3in at 15( 356) + 0 on 76;
+file . "ULA_BancReg_tb.vhd" "1d7ff3948fda595eadabbe63b37810a5770e2dd7" "20261008015008.011":
+  entity ula_bancreg_tb at 1( 0) + 0 on 83;
+  architecture a_ula_bancreg_tb of ula_bancreg_tb at 8( 101) + 0 on 84;
+file . "ROM_tb.vhd" "49f207bfe39aa4529cac44f34792c074b44e28a0" "20261018203917.377":
+  entity rom_tb at 1( 0) + 0 on 87;
+  architecture arq_rom_tb of rom_tb at 8( 93) + 0 on 88;
+file . "flipflopT_tb.vhd" "36b9c2000885a7a1241d2b74e9c0c8180e376e36" "20261018210619.050":
+  entity flipflopt_tb at 1( 0) + 0 on 91;
+  architecture arq_flipflopt_tb of flipflopt_tb at 8( 99) + 0 on 92;
