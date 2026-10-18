@@ -1,7 +1,10 @@
 v 4
-file . "contador.vhd" "250aa12c04d14b8bcdae6c69e23d9abe5e601e35" "20261018215024.174":
-  entity contador at 1( 0) + 0 on 93;
-  architecture a_contador of contador at 12( 287) + 0 on 94;
+file . "PC.vhd" "8ff5d51d324e24eeda141b1568ee99b5af118f43" "20261018232137.655":
+  entity pc at 1( 0) + 0 on 111;
+  architecture a_pc of pc at 14( 396) + 0 on 112;
+file . "contador.vhd" "06b3c388c861d5c9f2d7c4d3aa15e3488943b668" "20261018225528.277":
+  entity contador at 1( 0) + 0 on 103;
+  architecture a_contador of contador at 12( 262) + 0 on 104;
 file . "flipflopT.vhd" "944585d5a8640b618591a93aeb3032f0646d2cb8" "20261018210111.820":
   entity flipflopt at 1( 0) + 0 on 89;
   architecture a_flipflopt of flipflopt at 12( 209) + 0 on 90;
@@ -50,3 +53,9 @@ file . "ROM_tb.vhd" "49f207bfe39aa4529cac44f34792c074b44e28a0" "20261018203917.3
 file . "flipflopT_tb.vhd" "36b9c2000885a7a1241d2b74e9c0c8180e376e36" "20261018210619.050":
   entity flipflopt_tb at 1( 0) + 0 on 91;
   architecture arq_flipflopt_tb of flipflopt_tb at 8( 99) + 0 on 92;
+file . "PC_e_cont.vhd" "1e7123f4a08b10ff33051c00ef2108799dd2406e" "20261018232139.650":
+  entity pc_e_cont at 1( 0) + 0 on 113;
+  architecture a_pc_e_cont of pc_e_cont at 14( 359) + 0 on 114;
+file . "PC_e_cont_tb.vhd" "d90934fbbca129bedec1bac86f9e0f992704ef54" "20261018234150.125":
+  entity pc_e_cont_tb at 1( 0) + 0 on 117;
+  architecture a_pc_e_cont_tb of pc_e_cont_tb at 8( 106) + 0 on 118;
