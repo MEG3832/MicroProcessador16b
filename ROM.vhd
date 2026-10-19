@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 entity rom is
    port( endereco : in unsigned(6 downto 0);
-         dado     : out unsigned(17 downto 0) 
+         dado     : out unsigned(17 downto 0) -- é a própria instrução! no futuro, a saída ira para a UC (unidade de controle/decodifador de instruções)
    );
 end entity;
 architecture a_rom of rom is

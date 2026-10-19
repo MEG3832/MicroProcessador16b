@@ -8,9 +8,9 @@ file . "contador.vhd" "06b3c388c861d5c9f2d7c4d3aa15e3488943b668" "20261018225528
 file . "flipflopT.vhd" "944585d5a8640b618591a93aeb3032f0646d2cb8" "20261018210111.820":
   entity flipflopt at 1( 0) + 0 on 89;
   architecture a_flipflopt of flipflopt at 12( 209) + 0 on 90;
-file . "ROM.vhd" "ab26bd412cdec7c2ed368d5362515f9fecc987f7" "20261018203723.853":
-  entity rom at 1( 0) + 0 on 85;
-  architecture a_rom of rom at 9( 193) + 0 on 86;
+file . "ROM.vhd" "934c37cda3cf87878b1f86aeb9639f22cb0c9989" "20261019004243.869":
+  entity rom at 1( 0) + 0 on 129;
+  architecture a_rom of rom at 9( 314) + 0 on 130;
 file . "ULA_BancReg.vhd" "924814bc9ca977e41196549489e0a20186b0cb2b" "20261008001728.658":
   entity ula_bancreg at 1( 0) + 0 on 63;
   architecture a_ula_bancreg of ula_bancreg at 30( 1392) + 0 on 64;
@@ -59,3 +59,9 @@ file . "PC_e_cont.vhd" "1e7123f4a08b10ff33051c00ef2108799dd2406e" "2026101823213
 file . "PC_e_cont_tb.vhd" "d90934fbbca129bedec1bac86f9e0f992704ef54" "20261018234150.125":
   entity pc_e_cont_tb at 1( 0) + 0 on 117;
   architecture a_pc_e_cont_tb of pc_e_cont_tb at 8( 106) + 0 on 118;
+file . "PC_e_ROM.vhd" "3ad30541a27eb348e9804bc37e2ddcf27f2b8992" "20261019004248.253":
+  entity pc_e_rom at 1( 0) + 0 on 131;
+  architecture a_pc_e_rom of pc_e_rom at 14( 330) + 0 on 132;
+file . "PC_e_ROM_tb.vhd" "163148a35f4d1105f971aa4fe5477cbead3b4a04" "20261019004255.464":
+  entity pc_e_rom_tb at 1( 0) + 0 on 133;
+  architecture a_pc_e_rom_tb of pc_e_rom_tb at 8( 105) + 0 on 134;
