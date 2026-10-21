@@ -11,8 +11,8 @@ architecture a_PC_e_ROM_tb of PC_e_ROM_tb is
     component PC_e_ROM
         port( 
             clk      : in std_logic;
-            rst      : in std_logic;
-            wr_en    : in std_logic;
+            rst_PC   : in std_logic;
+            rst_FF   : in std_logic;
             out_ROM  : out unsigned(17 downto 0) 
         );
     end component;
@@ -23,10 +23,10 @@ architecture a_PC_e_ROM_tb of PC_e_ROM_tb is
     signal   clk         : std_logic := '0';
     
     -- Sinais de Controle
-    signal   rst         : std_logic := '0';
-    signal   wr_en       : std_logic := '0';
+    signal   rst_PC      : std_logic := '0';
+    signal   rst_FF      : std_logic := '0';
     
-    -- Sinal de Saída (A instrução inteira de 18 bits)
+    -- Sinal de Saída
     signal   out_ROM     : unsigned(17 downto 0);
 
 begin
@@ -34,24 +34,26 @@ begin
     -- 3. Instanciação do componente
     uut: PC_e_ROM port map (
         clk      => clk,
-        rst      => rst,
-        wr_en    => wr_en,
+        rst_PC   => rst_PC,
+        rst_FF   => rst_FF,
         out_ROM  => out_ROM
     );
 
-    -- 4. Processo de Reset Global Inicial
+    -- 4. Processo de Reset Inicial
     reset_global: process
     begin
-        rst <= '1'; -- Força o PC para o endereço zero
+        rst_PC <= '1'; -- Força o PC para o endereço zero
+        rst_FF <= '1'; -- Força a máquina de estados para o Estado 0 (Fetch)
         wait for period_time * 2; 
-        rst <= '0'; -- Libera o PC
+        rst_PC <= '0'; -- Libera o PC
+        rst_FF <= '0'; -- Libera a máquina de estados
         wait;
     end process;
     
     -- 5. Tempo máximo da simulação
     sim_time_proc: process
     begin
-        wait for 2 us; -- Suficiente para ler umas 15 instruções
+        wait for 3 us; -- Aumentei o tempo, pois agora cada instrução leva 2 clocks!
         finished <= '1';
         wait;
     end process sim_time_proc;
@@ -71,11 +73,9 @@ begin
     -- 7. Estímulos
     process
     begin
-        wait for 200 ns; -- Espera o reset global terminar
-
-        -- Deixa a escrita do PC sempre ligada para ele ir somando 1 a cada clock
-        wr_en <= '1'; 
-        
+        -- Como a Unidade de Controle (Flip-Flop T) agora dita o ritmo internamente,
+        -- nós não precisamos forçar nenhum sinal de 'wr_en' aqui.
+        -- O hardware trabalha sozinho a partir do reset!
         wait; 
     end process;
 
