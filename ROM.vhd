@@ -10,17 +10,21 @@ architecture a_rom of rom is
    type mem is array (0 to 127) of unsigned(17 downto 0);
    constant conteudo_rom : mem := (
       -- caso endereco => conteudo
-      0  => "000000000010000000",
-      1  => "100000000000000000",
-      2  => "000000000000000000",
-      3  => "000000000000000000",
-      4  => "100000000000000000",
-      5  => "000000000010000000",
-      6  => "111100000011000000",
-      7  => "000000000010000000",
-      8  => "000000000010000000",
-      9  => "000000000000000000",
-      10 => "000000000000000000",
+      -- 4 bits opcode + 7 bits zeros + 7 bits endereço
+      
+      0  => "000000000000000000", 
+      1  => "000000000000000001",
+      
+      -- salto para frente: salta do endereço 2 para o endereço 5
+      2  => "111100000000000101", 
+      
+      -- ignoramos o 3 e o 4 pela primeira vez...
+      3  => "000000000000000011", 
+      4  => "000000000000000100", 
+      
+      -- loop: saltamos do endereço 5 para o 3...
+      5  => "111100000000000011",
+      
       -- abaixo: casos omissos => (zero em todos os bits)
       others => (others=>'0')
    );

@@ -11,9 +11,9 @@ file . "contador.vhd" "06b3c388c861d5c9f2d7c4d3aa15e3488943b668" "20261018225528
 file . "flipflopT.vhd" "0c65f3ee06cd7242b42fc49e69f0d5fc687cb185" "20261021134735.646":
   entity flipflopt at 1( 0) + 0 on 139;
   architecture a_flipflopt of flipflopt at 12( 220) + 0 on 140;
-file . "ROM.vhd" "934c37cda3cf87878b1f86aeb9639f22cb0c9989" "20261019004243.869":
-  entity rom at 1( 0) + 0 on 129;
-  architecture a_rom of rom at 9( 314) + 0 on 130;
+file . "ROM.vhd" "526f6b9a137c7c13895dc4c1881c48f61cdc1da3" "20261022014233.739":
+  entity rom at 1( 0) + 0 on 147;
+  architecture a_rom of rom at 9( 314) + 0 on 148;
 file . "ULA_BancReg.vhd" "924814bc9ca977e41196549489e0a20186b0cb2b" "20261008001728.658":
   entity ula_bancreg at 1( 0) + 0 on 63;
   architecture a_ula_bancreg of ula_bancreg at 30( 1392) + 0 on 64;
@@ -41,9 +41,6 @@ file . "reg_16bits.vhd" "0d8abaa3214c0f771737cf6bac81699ba15a9b61" "202610080043
 file . "banco_regs_tb.vhd" "37284c57c58e60a850ddacbba00ae9c05015c4ce" "20261005184012.030":
   entity banco_regs_tb at 1( 0) + 0 on 39;
   architecture a_banco_regs_tb of banco_regs_tb at 8( 107) + 0 on 40;
-file . "mux_2in.vhd" "389c5f2675d36e9cb9e419598d8f060e8836f854" "20261008002631.217":
-  entity mux_2in at 1( 0) + 0 on 73;
-  architecture arq_mux of mux_2in at 14( 299) + 0 on 74;
 file . "mux_3in.vhd" "63893b454b00b3c8bc63c323b31fbdb6cd098242" "20261008002638.375":
   entity mux_3in at 1( 0) + 0 on 75;
   architecture arq_mux of mux_3in at 15( 356) + 0 on 76;
@@ -62,9 +59,12 @@ file . "PC_e_cont.vhd" "1e7123f4a08b10ff33051c00ef2108799dd2406e" "2026101823213
 file . "PC_e_cont_tb.vhd" "d90934fbbca129bedec1bac86f9e0f992704ef54" "20261018234150.125":
   entity pc_e_cont_tb at 1( 0) + 0 on 117;
   architecture a_pc_e_cont_tb of pc_e_cont_tb at 8( 106) + 0 on 118;
-file . "PC_e_ROM.vhd" "aef3b3f4b6582b0418f3c80d88faa1ab73012836" "20261021134759.712":
-  entity pc_e_rom at 1( 0) + 0 on 141;
-  architecture a_pc_e_rom of pc_e_rom at 14( 336) + 0 on 142;
-file . "PC_e_ROM_tb.vhd" "dc604a0eef3a55023bfff68768202e2a85bb4f91" "20261021134811.521":
-  entity pc_e_rom_tb at 1( 0) + 0 on 143;
-  architecture a_pc_e_rom_tb of pc_e_rom_tb at 8( 105) + 0 on 144;
+file . "PC_e_ROM.vhd" "3fe6d291246e8ccbb079248c9d1bb4659e75202b" "20261022014506.607":
+  entity pc_e_rom at 1( 0) + 0 on 159;
+  architecture a_pc_e_rom of pc_e_rom at 14( 336) + 0 on 160;
+file . "PC_e_ROM_tb.vhd" "7f028898f44437a66c5df1d862708649b46fa3e4" "20261022014542.102":
+  entity pc_e_rom_tb at 1( 0) + 0 on 161;
+  architecture a_pc_e_rom_tb of pc_e_rom_tb at 8( 105) + 0 on 162;
+file . "mux_2in_7bits.vhd" "95f77f940213cf5512230fadf84273e706f5cc46" "20261022014500.921":
+  entity mux_2in_7bits at 1( 0) + 0 on 157;
+  architecture arq_mux of mux_2in_7bits at 14( 315) + 0 on 158;
