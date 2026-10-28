@@ -1,0 +1,27 @@
+=========================================================
+Programa de Teste - Calculadora Programável (Lab #5)
+=========================================================
+
+A:  LD   R3, 5
+B:  LD   R4, 8
+C:  MOV  A1, R3
+    ADD  A1, R4
+    MOV  R5, A1
+D:  LD   R2, 1
+    MOV  A1, R5
+    SUB  A1, R2
+    MOV  R5, A1
+E:  JUMP 20
+F:  NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+G: MOV  R3, R5
+H: JUMP 2
+I: LD  R3, 0

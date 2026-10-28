@@ -1,0 +1,43 @@
+=========================================================
+Especificação da COdificação de Instruções (18 bits)
+=========================================================
+
+FORMATOS DE INSTRUÇÃO:
+
+1. Formato Carga de Constante (LD):
+   [17..14] Opcode (4 bits)
+   [13..10] Reg Destino (4 bits)
+   [9..0]  Constante (10 bits)
+
+2. Formato Aritmético e Movimentação (MOV, ADD, SUB):
+   [17..14] Opcode Principal (4 bits)
+   [13..10] Reg Destino (4 bits)
+   [9..6]  Reg Fonte (4 bits)
+   [5..3]   Sem uso / Zeros (5 bits)
+   [2..0]   Funct / Sub-operação (3 bits)
+
+3. Formato Desvio Absoluto (JUMP):
+   [17..14] Opcode (4 bits)
+   [13..7]  Sem uso / Zeros (7 bits)
+   [6..0]   Endereço de Destino na ROM (7 bits)
+
+OPCODES PRINCIPAIS:
+0000 : NOP  (0x0 - Obrigatório)
+0001 : LD   (Carrega constante no registrador)
+0010 : Formato Aritmético / R (Usa o campo funct nos bits [2..0])
+0011 : JUMP (Salto incondicional absoluto)
+
+SUB-OPERAÇÕES (CAMPO FUNCT [2..0] para o Opcode 0010):
+000 : MOV  (Copia valor entre registradores/acumulador)
+001 : ADD  (Soma entre registradores/acumulador)
+010 : SUB  (Subtração entre registradores/acumulador)
+
+MAPEAMENTO DE REGISTRADORES (3 BITS):
+000 : R0
+001 : R1
+010 : R2
+011 : R3
+100 : R4
+101 : R5
+110 : A1 (Acumulador 1)
+111 : A2 (Acumulador 2)
