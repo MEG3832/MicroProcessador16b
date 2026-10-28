@@ -1,5 +1,5 @@
 =========================================================
-Especificação da COdificação de Instruções (18 bits)
+Especificação da Codificação de Instruções (18 bits)
 =========================================================
 
 FORMATOS DE INSTRUÇÃO:
@@ -24,20 +24,25 @@ FORMATOS DE INSTRUÇÃO:
 OPCODES PRINCIPAIS:
 0000 : NOP  (0x0 - Obrigatório)
 0001 : LD   (Carrega constante no registrador)
-0010 : Formato Aritmético / R (Usa o campo funct nos bits [2..0])
+0010 : Formato Aritmético (Usa o campo funct nos bits [2..0])
 0011 : JUMP (Salto incondicional absoluto)
 
-SUB-OPERAÇÕES (CAMPO FUNCT [2..0] para o Opcode 0010):
+SUB-OPERAÇÕES (Campo Funct [2..0] para o Opcode 0010):
 000 : MOV  (Copia valor entre registradores/acumulador)
 001 : ADD  (Soma entre registradores/acumulador)
 010 : SUB  (Subtração entre registradores/acumulador)
 
-MAPEAMENTO DE REGISTRADORES (3 BITS):
-000 : R0
-001 : R1
-010 : R2
-011 : R3
-100 : R4
-101 : R5
-110 : A1 (Acumulador 1)
-111 : A2 (Acumulador 2)
+MAPEAMENTO DE REGISTRADORES (4 bits):
+0000 : R0
+0001 : R1
+0010 : R2
+0011 : R3
+0100 : R4
+0101 : R5
+0110 : R6
+0111 : R7
+1000 : R8
+1001 : R9
+1010 : R10
+1110 : A1 (Acumulador 1)
+1111 : A2 (Acumulador 2)
