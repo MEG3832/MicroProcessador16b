@@ -2,14 +2,11 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
--- O nome do testbench top-level deve ser obrigatoriamente "processador_tb.vhd" 
 entity processador_tb is
 end entity;
 
 architecture a_processador_tb of processador_tb is
     
-    -- Componente do topo da hierarquia, com as entradas clk e rst, 
-    -- e os pinos visíveis para o GTKWave (incluindo o out_ULA adicionado anteriormente)
     component processador
         port(
             clk : in std_logic;
@@ -24,13 +21,12 @@ architecture a_processador_tb of processador_tb is
         );
     end component;
 
-    -- Controle de tempo herdado dos seus testbenches anteriores
+
     constant period_time: time:= 100 ns;
     signal finished: std_logic := '0';
     signal clk: std_logic := '0';
     signal rst: std_logic := '0';
 
-    -- Sinais para capturar as saídas e observar no GTKWave
     signal estado_out : unsigned(1 downto 0);
     signal pc_out     : unsigned(6 downto 0);
     signal instr_out  : unsigned(17 downto 0);
@@ -40,7 +36,7 @@ architecture a_processador_tb of processador_tb is
     signal out_ULA    : unsigned(15 downto 0);
 
 begin
-    -- Mapeamento do processador completo
+
     uut: processador port map (
         clk        => clk,
         rst        => rst,
@@ -53,7 +49,6 @@ begin
         out_ULA    => out_ULA
     );
 
-    -- Processo de reset inicial idêntico ao do ULA_BancReg_tb
     reset_global: process
     begin
         rst <= '1'; 
@@ -62,7 +57,6 @@ begin
         wait;
     end process;
     
-    -- Tempo de simulação (5 us costuma ser o suficiente para o programa rodar várias vezes)
     sim_time_proc: process
     begin
         wait for 5 us; 
@@ -70,7 +64,6 @@ begin
         wait;
     end process sim_time_proc;
 
-    -- Geração do clock idêntica à dos seus testbenches
     clk_proc: process
     begin                       
         while finished /= '1' loop
@@ -81,8 +74,5 @@ begin
         end loop;
         wait;
     end process clk_proc;
-
-    -- NOTA: Você não precisa de um processo injetando estímulos manuais aqui,
-    -- pois as instruções virão automaticamente da ROM a cada ciclo de clock!
 
 end architecture;

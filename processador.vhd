@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 entity processador is
     port(
         clk : in std_logic;
-        rst : in std_logic; -- Reset global para todos os componentes
+        rst : in std_logic; -- reset global para todos os componentes
 
         -- pinos para visualizar as formas de onda
         estado_out : out unsigned(1 downto 0);
@@ -83,8 +83,7 @@ architecture a_processador of processador is
     signal sel_mux_ULA_br_s, sel_mux_ULA_acc_s : std_logic;
     signal reg_wr_br_s, reg_read_br_s : unsigned(3 downto 0);
 
-    signal out_ROM_s     : unsigned(17 downto 0); 
-    signal instr_s       : unsigned(17 downto 0); 
+    signal out_ROM_s     : unsigned(17 downto 0);
     signal wr_en_RI_s    : std_logic;             
 
     begin
