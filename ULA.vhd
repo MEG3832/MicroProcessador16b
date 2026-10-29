@@ -18,7 +18,7 @@ architecture arq_ULA of ULA is
 begin
 
     saida <= (entrada_A + entrada_B) when select_op = "00" else
-             (entrada_A - entrada_B) when select_op = "01" else
+             (entrada_B - entrada_A) when select_op = "01" else
              (entrada_A or entrada_B) when select_op = "10" else
              (entrada_A and entrada_B) when select_op = "11" else
              "0000000000000000";

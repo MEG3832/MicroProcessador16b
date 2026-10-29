@@ -22,7 +22,8 @@ entity ULA_BancReg is
 
             out_BR: out unsigned(15 downto 0);
             out_ACC1: out unsigned(15 downto 0);
-            out_ACC2: out unsigned(15 downto 0)
+            out_ACC2: out unsigned(15 downto 0);
+            out_ULA: out unsigned(15 downto 0)
     );
 
 end entity;
@@ -144,5 +145,6 @@ architecture a_ULA_BancReg of ULA_BancReg is
     out_BR <= br_out;
     out_ACC1 <= acc1_out;
     out_ACC2 <= acc2_out;
+    out_ULA <= ula_out;
 
 end architecture;

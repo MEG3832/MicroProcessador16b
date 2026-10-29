@@ -5,8 +5,11 @@ use ieee.numeric_std.all;
 entity PC_e_ROM is
    port( clk      : in std_logic;
          rst_PC      : in std_logic;
-         rst_FF      : in std_logic;
-         out_ROM : out unsigned(17 downto 0) -- out da ROM !!!! irá para o conjunto (bancoReg + ULA) dps
+         pc_wr_en  : in std_logic;            -- vem da UC (externa)
+         jump_en   : in std_logic;            -- vem da UC (externa)
+         addr_jump : in unsigned(6 downto 0); -- vem da UC (externa)
+         out_ROM : out unsigned(17 downto 0); -- out da ROM !!!! irá para o conjunto (bancoReg + ULA) dps
+         pc_out    : out unsigned(6 downto 0) -- apenas para vermos o sinal depois...
    );
 end entity;
 
@@ -40,16 +43,6 @@ architecture a_PC_e_ROM of PC_e_ROM is
         );
     end component;
 
-    component UC
-      port(
-            clk : in std_logic; -- clk para o FF
-            instr : in unsigned(17 downto 0);
-            rst_FF : in std_logic;
-            pc_wr_en : out std_logic;
-            jump_en : out std_logic
-      );                       
-      end component;
-
       component mux_2in_7bits -- usamos um mux pra passar adiante como data_in do pc OU o endereço
       port(                   -- para o qual vamos fazer o JUMP (está na estrutura da instruçãos) OU o +1 do contador
             input0: in unsigned(6 downto 0);
@@ -63,52 +56,36 @@ architecture a_PC_e_ROM of PC_e_ROM is
       
 
 
-    signal pcOUT_romIN: unsigned(6 downto 0);
-    signal pcOUT_contIN: unsigned(6 downto 0);
-    signal romOUT_s: unsigned(17 downto 0); -- instrução total que sai da ROM e vai para a UC !!
-    signal addr_jump: unsigned(6 downto 0); -- parte da instrução total q eh o endereço para o qual vamos estar pulando
-    signal ucOUT_wr_en: std_logic;
-    signal jump_en_s: std_logic; -- ativa ou não o mux
-    signal contOUT: unsigned(6 downto 0);
-    signal muxOUT_pcIN: unsigned(6 downto 0);
+    signal pcOUT_s   : unsigned(6 downto 0);
+    signal contOUT_s : unsigned(6 downto 0);
+    signal muxOUT_s  : unsigned(6 downto 0);
+    signal romOUT_s  : unsigned(17 downto 0);
     
     
 
     begin
-    
-    --bifurcações e cópias de sinais importantes
-    addr_jump <= romOUT_s(6 downto 0);
-    pcOUT_romIN <= pcOUT_contIN;
 
-
-
-
-    rom_inst: ROM port map(endereco => pcOUT_romIN,
+    rom_inst: ROM port map(endereco => pcOUT_s,
                            dado => romOUT_s);
 
     
       
-     cont: contador port map (in_cont => pcOUT_contIN,
-                              out_cont => contOUT);
+     cont: contador port map (in_cont => pcOUT_s,
+                              out_cont => contOUT_s);
     
 
      PC_inst: PC port map (clk => clk,
                            rst => rst_PC,
-                           wr_en => ucOUT_wr_en,
-                           data_in => muxOUT_pcIN,
-                           data_out => pcOUT_contIN);                                
+                           wr_en => pc_wr_en,
+                           data_in => muxOUT_s,
+                           data_out => pcOUT_s);                                
 
-     UC_inst: UC port map (clk => clk,
-                           rst_FF => rst_FF,
-                           instr => romOUT_s,
-                           pc_wr_en => ucOUT_wr_en,
-                           jump_en => jump_en_s);
-
-     mux_2in_inst: mux_2in_7bits port map (input0 => contOUT,
+     mux_2in_inst: mux_2in_7bits port map (input0 => contOUT_s,
                                            input1 => addr_jump,
-                                           sel => jump_en_s,
-                                           saida => muxOUT_pcIN);
+                                           sel => jump_en,
+                                           saida => muxOUT_s);
 
-      out_ROM <= romOUT_s;
+    out_ROM <= romOUT_s;
+    pc_out  <= pcOUT_s;
 
 end architecture;
