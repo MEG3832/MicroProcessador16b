@@ -28,11 +28,19 @@ FORMATOS DE INSTRUÇÃO:
    [13..7]  Sem uso / Zeros (7 bits)
    [6..0]   Endereço de Destino na ROM (7 bits) -- data_in (PC)
 
+4. Formato Desvio Relativo (branches):
+
+   [17..14]  Opcode (4 bits)
+   [13..11]  Funct (3 bits)
+   [10..7]   Sem uso / Zeros (4 bits)
+   [6..0]    Delta (7 bits) -- constante de pulo
+
 OPCODES PRINCIPAIS:
 0000 : NOP  (0x0 - Obrigatório)
 0001 : LD   (Carrega constante no registrador)
 0010 : Formato Aritmético (Usa o campo funct nos bits [2..0])
 0011 : JUMP (Salto incondicional absoluto)
+0100 : branch (Salto condicional relativo)
 
 SUB-OPERAÇÕES (Campo Funct [2..0] para o Opcode 0010):
 000 : MOV  (Copia valor entre registradores/acumulador)
