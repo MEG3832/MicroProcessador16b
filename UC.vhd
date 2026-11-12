@@ -8,10 +8,18 @@ entity UC is
         instr : in unsigned(17 downto 0);
         rst: in std_logic; -- reset para maq de estados
 
-        -- sinais de controle do PC e JUMP
-        pc_wr_en        : out std_logic;                    -- incrementa ou atualiza o PC
-        jump_en         : out std_logic;                    -- ativa o mux de jump no PC
-        addr_jump       : out unsigned(6 downto 0);         -- endereço do jump (7 bits)
+        flag_z: in std_logic;
+        flag_n: in std_logic;
+        flag_v: in std_logic;
+
+        -- sinais de controle do PC, jump e branch
+        pc_wr_en        : out std_logic;
+        jump_en         : out std_logic;                    -- vai para o mux (3in)
+        branch_en       : out std_logic;                    -- vai para o mux (3in)
+        cte_desvio      : out unsigned(6 downto 0);         -- endereço do jump OU delta do branch
+                                                            -- como nós guardamos os bits do endereço de destino do jump e o delta da branch
+                                                            -- nos mesmos bits, vai depender se identificamos uma operação de jump ou branch d fato.
+        wr_en_flags     : out std_logic;                    -- vai identificar uma instrução branch e enviar o sinal para os FFs
 
         -- sinais de controle do ULA_BancReg
         wr_en_ACC1      : out std_logic;                    -- habilita escrita acc1
@@ -54,6 +62,7 @@ architecture a_UC of UC is
     signal estado_s : unsigned(1 downto 0);
     signal opcode   : unsigned(3 downto 0); -- opcode
     signal funct    : unsigned(2 downto 0); -- funct
+    signal funct_branch : unsigned(2 downto 0); -- funct específico para branches
 
     signal reg_dest_s : unsigned(3 downto 0); -- reg destino
     signal reg_src_s  : unsigned(3 downto 0); -- reg fonte
@@ -69,8 +78,10 @@ architecture a_UC of UC is
     signal is_add  : std_logic;
     signal is_sub  : std_logic;
     signal is_jump : std_logic;
+    signal is_beq  : std_logic;
+    signal is_bge  : std_logic;
 
-
+    signal branch_final : std_logic;
 
 begin
 
@@ -91,7 +102,7 @@ begin
 
    --bits que representam a funct..
    funct      <= instr(2 downto 0);
-
+   funct_branch <= instr(13 downto 11);
 
    -- *************************** --
 
@@ -100,6 +111,8 @@ begin
    is_add  <= '1' when opcode = "0010" and funct = "001" else '0'; -- ADD (soma na ULA)
    is_sub  <= '1' when opcode = "0010" and funct = "010" else '0'; -- SUB (subtrai na ULA)
    is_jump <=  '1' when opcode = "0011" else '0'; -- jump (pulo incondicional)
+   is_beq  <= '1' when opcode = "0100" and funct_branch = "000" else '0';
+   is_bge  <= '1' when opcode = "0100" and funct_branch = "001" else '0';
 
    -- A1 = 1110, A2 = 1111, BR = 0000 a 1010
     dest_is_a1 <= '1' when reg_dest_s = "1110" else '0';
@@ -110,7 +123,7 @@ begin
     -- atribuição das saídas de dados
     reg_wr_br   <= reg_dest_s;
     reg_read_br <= reg_src_s;
-    addr_jump   <= instr(6 downto 0);
+    cte_desvio   <= instr(6 downto 0);
 
 
     -- extendendo a constante de 10 para 16 bits (com zeros à esquerda)
@@ -146,6 +159,16 @@ begin
 
     -- habilitar escrita no RI no segundo estado (estado "01")
     wr_en_RI   <= '1' when estado_s = "01" else '0';
+
+    --parte da logica do branch...
+    
+    branch_final <= '1' when (is_beq = '1' and flag_z = '1') else
+                     '1' when (is_bge = '1' and (flag_n = flag_v)) else
+                     '0';
+
+    branch_en <= '1' when (branch_final = '1' and estado_s = "10") else '0';
+
+    wr_en_flags <= '1' when ((is_add = '1' or is_sub = '1') and estado_s = "10") else '0'; -- habilita escrita nos FFs das flags (apenas em soma e sub)
 
 
 

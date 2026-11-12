@@ -21,8 +21,8 @@ end entity;
 architecture a_processador of processador is
 
     component PC_e_ROM
-       port( clk, rst_PC, pc_wr_en, jump_en : in std_logic;
-             addr_jump : in unsigned(6 downto 0);
+       port( clk, rst_PC, pc_wr_en, jump_en, branch_en : in std_logic;
+             cte_desvio : in unsigned(6 downto 0);
              out_ROM   : out unsigned(17 downto 0);
              pc_out    : out unsigned(6 downto 0) );
     end component;
@@ -30,8 +30,9 @@ architecture a_processador of processador is
     component UC
         port( clk, rst : in std_logic;
               instr    : in unsigned(17 downto 0);
-              pc_wr_en, jump_en : out std_logic;
-              addr_jump : out unsigned(6 downto 0);
+              flag_z, flag_n, flag_v : in std_logic;
+              pc_wr_en, jump_en, branch_en, wr_en_flags : out std_logic;
+              cte_desvio : out unsigned(6 downto 0);
               wr_en_ACC1, wr_en_ACC2, wr_en_BR : out std_logic;
               sel_OP_ULA : out unsigned(1 downto 0);
               load_cte   : out unsigned(15 downto 0);
@@ -62,14 +63,31 @@ architecture a_processador of processador is
               sel_mux_br, sel_ACCs, sel_mux_ULA_br, sel_mux_ULA_acc : in std_logic;
               cte_comparacao : in unsigned(15 downto 0);
               reg_wr_br, reg_read_br : in unsigned(3 downto 0);
+              flag_z, flag_n, flag_v : out std_logic;
               out_BR, out_ACC1, out_ACC2, out_ULA : out unsigned(15 downto 0) );
     end component;
 
+    component FFs_flagsULA
+        port (
+            clk      : in std_logic;
+            rst      : in std_logic;
+            wr_en    : in std_logic;
+            z_in     : in std_logic;
+            n_in     : in std_logic;
+            v_in     : in std_logic;
+            z_out    : out std_logic;
+            n_out    : out std_logic;
+            v_out    : out std_logic
+        );
+    end component;
+
     --sinais
-    signal instr_s       : unsigned(17 downto 0);
+   signal instr_s       : unsigned(17 downto 0);
     signal pc_wr_en_s    : std_logic;
     signal jump_en_s     : std_logic;
-    signal addr_jump_s   : unsigned(6 downto 0);
+    
+    signal branch_en_s   : std_logic;
+    signal cte_desvio_s  : unsigned(6 downto 0);
     
     signal wr_en_ACC1_s  : std_logic;
     signal wr_en_ACC2_s  : std_logic;
@@ -86,6 +104,12 @@ architecture a_processador of processador is
     signal out_ROM_s     : unsigned(17 downto 0);
     signal wr_en_RI_s    : std_logic;             
 
+    signal flag_z_ula_s, flag_n_ula_s, flag_v_ula_s : std_logic; -- dados q saem da ULA_BancReg
+    
+    signal flag_z_salva_s, flag_n_salva_s, flag_v_salva_s : std_logic; -- dados salvos saindo dos FFs indo para a UC
+    
+    signal wr_en_flags_s : std_logic;             
+
     begin
     
     instr_out <= instr_s;
@@ -96,9 +120,10 @@ architecture a_processador of processador is
         rst_PC    => rst,
         pc_wr_en  => pc_wr_en_s,
         jump_en   => jump_en_s,
-        addr_jump => addr_jump_s,
+        branch_en => branch_en_s,
+        cte_desvio => cte_desvio_s,
         out_ROM   => out_ROM_s,     
-        pc_out    => pc_out       --para observar as formas de onda dps.....
+        pc_out    => pc_out
     );
 
     inst_RI: reg_instrucao port map(
@@ -114,11 +139,19 @@ architecture a_processador of processador is
         clk => clk,
         rst => rst,
         instr => instr_s, -- recebe a instrução do RI
+
+
+        -- UC recebe as flags dos FFs..
+        flag_z => flag_z_salva_s,
+        flag_n => flag_n_salva_s,
+        flag_v => flag_v_salva_s,
         
-        -- saídas para o PC_e_ROM
+       -- saídas para o PC_e_ROM
         pc_wr_en        => pc_wr_en_s,
         jump_en         => jump_en_s,
-        addr_jump       => addr_jump_s,
+        branch_en       => branch_en_s,
+        cte_desvio      => cte_desvio_s,
+        wr_en_flags     => wr_en_flags_s,
         
         -- saídas para o bloco ULA_BancReg
         wr_en_ACC1      => wr_en_ACC1_s,
@@ -137,6 +170,21 @@ architecture a_processador of processador is
         wr_en_RI        => wr_en_RI_s,
         estado_out      => estado_out
     );
+
+
+    -- bloco de FFs.. conectando a ULA com a UC
+    inst_FFs_flags: FFs_flagsULA port map(
+        clk   => clk,
+        rst   => rst,
+        wr_en => wr_en_flags_s,
+        z_in  => flag_z_ula_s,
+        n_in  => flag_n_ula_s,
+        v_in  => flag_v_ula_s,
+        z_out => flag_z_salva_s,
+        n_out => flag_n_salva_s,
+        v_out => flag_v_salva_s
+    );
+
 
     -- ULA e banco de registradores
     inst_datapath: ULA_BancReg port map(
@@ -165,6 +213,11 @@ architecture a_processador of processador is
         cte_comparacao  => "0000000000000000",
         
         -- saídas para observar as formas de onda...
+
+        flag_z          => flag_z_ula_s,
+        flag_n          => flag_n_ula_s,
+        flag_v          => flag_v_ula_s,
+
         out_BR          => out_BR,
         out_ACC1        => out_ACC1,
         out_ACC2        => out_ACC2,

@@ -7,7 +7,8 @@ entity PC_e_ROM is
          rst_PC      : in std_logic;
          pc_wr_en  : in std_logic;            -- vem da UC (externa)
          jump_en   : in std_logic;            -- vem da UC (externa)
-         addr_jump : in unsigned(6 downto 0); -- vem da UC (externa)
+         cte_desvio : in unsigned(6 downto 0); -- vem da UC (externa)
+         branch_en : in std_logic;            -- vem da UC (externa)
          out_ROM : out unsigned(17 downto 0); -- out da ROM !!!! irá para o conjunto (bancoReg + ULA) dps
          pc_out    : out unsigned(6 downto 0) -- apenas para vermos o sinal depois...
    );
@@ -43,27 +44,40 @@ architecture a_PC_e_ROM of PC_e_ROM is
         );
     end component;
 
-      component mux_2in_7bits -- usamos um mux pra passar adiante como data_in do pc OU o endereço
-      port(                   -- para o qual vamos fazer o JUMP (está na estrutura da instruçãos) OU o +1 do contador
+
+    component mux_3in_7bits -- usamos um mux pra escolher entre branch, jump ou atualização normal do pc (+1)
+        port(
             input0: in unsigned(6 downto 0);
             input1: in unsigned(6 downto 0);
-            sel       : in std_logic;
-            saida     : out unsigned(6 downto 0)
-
-      );
-      end component;
-
-      
-
+            input2: in unsigned(6 downto 0);
+            sel   : in unsigned(1 downto 0);
+            saida : out unsigned(6 downto 0)
+        );
+    end component;
 
     signal pcOUT_s   : unsigned(6 downto 0);
     signal contOUT_s : unsigned(6 downto 0);
     signal muxOUT_s  : unsigned(6 downto 0);
     signal romOUT_s  : unsigned(17 downto 0);
+
+    signal addr_branch_s : unsigned(6 downto 0); 
+    signal sel_pc_s      : unsigned(1 downto 0);
     
     
 
     begin
+
+    -- ********* --
+    
+    -- faz (PC + 1) + constante
+    addr_branch_s <= unsigned(signed(contOUT_s) + signed(cte_desvio));
+
+    -- seleção que vai pro mux 3in
+    sel_pc_s <= "01" when jump_en = '1' else
+                "10" when branch_en = '1' else
+                "00";
+
+    -- ********* --
 
     rom_inst: ROM port map(endereco => pcOUT_s,
                            dado => romOUT_s);
@@ -80,10 +94,11 @@ architecture a_PC_e_ROM of PC_e_ROM is
                            data_in => muxOUT_s,
                            data_out => pcOUT_s);                                
 
-     mux_2in_inst: mux_2in_7bits port map (input0 => contOUT_s,
-                                           input1 => addr_jump,
-                                           sel => jump_en,
-                                           saida => muxOUT_s);
+     mux_3in_inst: mux_3in_7bits port map (input0 => contOUT_s,      -- sequencial normal (PC + 1)
+                                           input1 => cte_desvio,     -- jump (usa a cte_desvio pura)
+                                           input2 => addr_branch_s,  -- branch (usa o resultado da soma)
+                                           sel    => sel_pc_s,
+                                           saida  => muxOUT_s);
 
     out_ROM <= romOUT_s;
     pc_out  <= pcOUT_s;
