@@ -7,26 +7,19 @@ FORMATOS DE INSTRUÇÃO:
 1. Formato Carga de Constante (LD):
    [17..14] Opcode (4 bits)
    [13..10] Reg Destino (4 bits) 
-                                 -- wr_en_br = 1
-   [9..0]  Constante (10 bits)   -- load_cte
+   [9..0]  Constante (10 bits)
 
 2. Formato Aritmético e Movimentação (MOV, ADD, SUB):
-   [17..14] Opcode Principal (4 bits)  -- sel_mux_acc_in = 01
-                                       -- wr_en_br = 1
-   [13..10] Reg Destino (4 bits) -- Se A1 = wr_en_ACC1 = 1, se A2 = wr_en_ACC2 = 1
-                                 -- Se A1 = sel_ACCs = 0, se A2 = sel_ACCs = 1
-                                 -- reg_wr_br
+   [17..14] Opcode Principal (4 bits)
+   [13..10] Reg Destino (4 bits) 
    [9..6]  Reg Fonte (4 bits) -- reg_read_br
    [5..3]   Sem uso / Zeros (5 bits)
-   [2..0]   Funct / Sub-operação (3 bits) -- sel_OP_ULA
-                                          -- sel_mux_ULA_br = 1 (nunca cte)
-                                          -- sel_mux_ULA_acc = 1 (nunca cte)
-                                          -- cte_comparacao = 0 (por enquanto não vai ter isso aí)
-
+   [2..0]   Funct / Sub-operação (3 bits) 
+                  
 3. Formato Desvio Absoluto (JUMP):
-   [17..14] Opcode (4 bits)   -- jump_en = 1
+   [17..14] Opcode (4 bits)  
    [13..7]  Sem uso / Zeros (7 bits)
-   [6..0]   Endereço de Destino na ROM (7 bits) -- data_in (PC)
+   [6..0]   Endereço de Destino na ROM (7 bits) 
 
 4. Formato Desvio Relativo (branches):
 
@@ -40,7 +33,7 @@ OPCODES PRINCIPAIS:
 0001 : LD   (Carrega constante no registrador)
 0010 : Formato Aritmético (Usa o campo funct nos bits [2..0])
 0011 : JUMP (Salto incondicional absoluto)
-0100 : branch (Salto condicional relativo)
+0100 : BRANCH(Salto condicional relativo)
 
 SUB-OPERAÇÕES (Campo Funct [2..0] para o Opcode 0010):
 000 : MOV  (Copia valor entre registradores/acumulador)
@@ -48,6 +41,10 @@ SUB-OPERAÇÕES (Campo Funct [2..0] para o Opcode 0010):
 010 : SUB  (Subtração entre registradores/acumulador)
 011 : OR   (Ou inclusivo entre dois registradores)
 100 : AND   (E entre dois registradores)
+
+SUB-OPERAÇÕES (Campo Funct [13..11] para o Opcode 0100):
+000: BEQ (Pula se a operação anterior deu Z = 1)
+001: BGE (Pula se a operação anterior deu N = V)
 
 MAPEAMENTO DE REGISTRADORES (4 bits):
 0000 : R0

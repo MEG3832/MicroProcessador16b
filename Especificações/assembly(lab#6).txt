@@ -1,0 +1,17 @@
+=========================================================
+Programa de Teste - Condicionais e Desvios (Lab #6)
+=========================================================
+
+A: LD R3, 0
+B: LD R4, 0
+C: MOV A1, R3
+   ADD A1, R4
+   MOV R4, A1
+D: LD A1, 1
+   ADD A1, R3
+   MOV R3, A1
+E: LD A1, 30
+   SUB A1, R3
+   BGE -3
+F: MOV A1, R4
+   MOV R5, A1
