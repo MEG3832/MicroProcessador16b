@@ -23,7 +23,10 @@ entity ULA_BancReg is
             out_BR: out unsigned(15 downto 0);
             out_ACC1: out unsigned(15 downto 0);
             out_ACC2: out unsigned(15 downto 0);
-            out_ULA: out unsigned(15 downto 0)
+            out_ULA: out unsigned(15 downto 0);
+            flag_z         : out std_logic;
+            flag_n         : out std_logic;
+            flag_v         : out std_logic
     );
 
 end entity;
@@ -46,7 +49,11 @@ architecture a_ULA_BancReg of ULA_BancReg is
         entrada_B: in unsigned(15 downto 0);
         select_op: in unsigned(1 downto 0);
 
-        saida: out unsigned(15 downto 0)
+        saida: out unsigned(15 downto 0);
+
+        flag_z: out std_logic;
+        flag_n: out std_logic;
+        flag_v: out std_logic
 
     );
     end component;
@@ -104,9 +111,12 @@ architecture a_ULA_BancReg of ULA_BancReg is
                                data_out => acc2_out);
 
     inst_ula: ULA port map (entrada_A => br_ula,
-                       entrada_B => acc_ula,
-                       select_op => sel_OP_ULA,
-                       saida => ula_out);
+                            entrada_B => acc_ula,
+                            select_op => sel_OP_ULA,
+                            saida => ula_out,
+                            flag_z     => flag_z,
+                            flag_n     => flag_n,
+                            flag_v     => flag_v);
 
     br: banco_regs port map (wr_en_br => wr_en_BR,
                              clk => clk,
@@ -146,5 +156,6 @@ architecture a_ULA_BancReg of ULA_BancReg is
     out_ACC1 <= acc1_out;
     out_ACC2 <= acc2_out;
     out_ULA <= ula_out;
+    
 
 end architecture;

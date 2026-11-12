@@ -9,9 +9,9 @@ entity ULA is
         select_op: in unsigned(1 downto 0);
 
 
-        zero: out std_logic;
-        negativo: out std_logic;
-        overflow: out std_logic;
+        flag_z: out std_logic;
+        flag_n: out std_logic;
+        flag_v: out std_logic;
         saida: out unsigned(15 downto 0)
 
     );
@@ -31,11 +31,11 @@ begin
 
     saida <= saida_s;
 
-    zero <= '1' when saida_s = "0000000000000000" else '0';
+    flag_z <= '1' when saida_s = "0000000000000000" else '0';
 
-    negativo <= saida_s(15);
+    flag_n <= saida_s(15);
 
-    overflow <= '1' when (select_op = "00" and (entrada_A(15) = entrada_B(15)) and (saida_s(15) /= entrada_A(15))) else
+    flag_v <= '1' when (select_op = "00" and (entrada_A(15) = entrada_B(15)) and (saida_s(15) /= entrada_A(15))) else
                 '1' when (select_op = "01" and (entrada_A(15) /= entrada_B(15)) and (saida_s(15) /= entrada_A(15))) else
                 '0';
 

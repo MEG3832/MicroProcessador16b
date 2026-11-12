@@ -21,8 +21,7 @@ architecture a_processador_tb of processador_tb is
         );
     end component;
 
-
-    constant period_time: time:= 100 ns;
+    constant period_time: time := 100 ns;
     signal finished: std_logic := '0';
     signal clk: std_logic := '0';
     signal rst: std_logic := '0';
@@ -59,7 +58,7 @@ begin
     
     sim_time_proc: process
     begin
-        wait for 10 us; 
+        wait for 30 us; 
         finished <= '1';
         wait;
     end process sim_time_proc;
