@@ -16,7 +16,7 @@ begin
     begin
         if rst = '1' then
             estado_s <= "00";
-        elsif falling_edge(clk) then
+        elsif rising_edge(clk) then
             if estado_s = "10" then
                 estado_s <= "00";
             else

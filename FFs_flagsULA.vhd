@@ -30,7 +30,7 @@ begin
             n_out <= '0';
             v_out <= '0';
             
-        elsif falling_edge(clk) then
+        elsif rising_edge(clk) then
 
             if wr_en = '1' then
                 z_out <= z_in;
