@@ -20,6 +20,6 @@ LD A1, 0
 LD A2, 0 
 
 # Leitura em Ordem Diferente da Escrita (LW)
-LW R6, R1       # R6 recebe RAM[10] (Esperado: 165)
-LW R2, R5       # R2 recebe RAM[120] (Esperado: 571)
-LW R4, R3       # R4 recebe RAM[50] (Esperado: 500)
+LW A1, R1       # A1 recebe RAM[10] (165)
+LW A2, R5       # A2 recebe RAM[120] (571)
+LW A1, R3       # A1 recebe RAM[50] (500)
