@@ -67,7 +67,7 @@ architecture a_processador of processador is
               reg_wr_br, reg_read_br : in unsigned(3 downto 0);
               dado_ram_in : in unsigned(15 downto 0);
               flag_z, flag_n, flag_v : out std_logic;
-              out_BR, out_ACC1, out_ACC2, out_ULA : out unsigned(15 downto 0) );
+              out_BR, out_ACC1, out_ACC2, out_ACC_sw, out_ULA : out unsigned(15 downto 0) );
     end component;
 
     component FFs_flagsULA
@@ -131,6 +131,8 @@ architecture a_processador of processador is
     begin
     
     instr_out <= instr_s;
+    out_BR    <= out_br_s;
+    out_RAM   <= dado_ram_out_s;
 
     -- PC e ROM --
     inst_pc_rom: PC_e_ROM port map(
