@@ -22,24 +22,21 @@ FORMATOS DE INSTRUÇÃO:
    [6..0]   Endereço de Destino na ROM (7 bits) 
 
 4. Formato Desvio Relativo (branches):
-
    [17..14]  Opcode (4 bits)
    [13..11]  Funct (3 bits)
    [10..7]   Sem uso / Zeros (4 bits)
    [6..0]    Delta (7 bits) -- constante de pulo
 
 5. Formato de leitura de dados da RAM
-
    [17..14]  Opcode (4 bits)
    [13..10]  Reg Destino (4 bits)
    [9..6]    Reg Fonte (4 bits)
    [6..0]    Delta (7 bits)
 
 6. Formato de armazenamento de dados da RAM
-
    [17..14]  Opcode (4 bits)
-   [13..10]  Reg Destino (4 bits)
-   [9..6]    Reg Fonte (4 bits)
+   [13..10]  Reg Fonte (4 bits)
+   [9..6]    Reg Destino (4 bits)
    [6..0]    Delta (7 bits)
 
 OPCODES PRINCIPAIS:
