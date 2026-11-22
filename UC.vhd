@@ -29,7 +29,7 @@ entity UC is
         sel_OP_ULA      : out unsigned(1 downto 0);         -- operação da ULA
         load_cte        : out unsigned(15 downto 0);        -- cte extendida de 10 para 16 bits
         
-        sel_mux_acc_in  : out unsigned(1 downto 0);         -- MUX entrada acc (00 - BR, 01 - CTE, 10 - ULA)
+        sel_mux_acc_in  : out unsigned(1 downto 0);         -- MUX entrada acc (00 - BR, 01 - CTE, 10 - ULA, 11 - RAM)
         sel_mux_br      : out std_logic;                    -- MUX entrada br (0: CTE, 1: ACC)
         sel_ACCs        : out std_logic;                    -- escolhe acumulador de saída (0: ACC1, 1: ACC2)
         sel_mux_ULA_br  : out std_logic;                    -- MUX entrada 1 ULA (0: BR, 1: cte_comp)
@@ -37,6 +37,8 @@ entity UC is
         
         reg_wr_br       : out unsigned(3 downto 0);         -- endereço de escrita no BR
         reg_read_br     : out unsigned(3 downto 0);         -- endereço de leitura no BR
+
+        wr_en_ram       : out std_logic;                    -- habilita escrita na RAM, na instrução de SW
 
         wr_en_RI        : out std_logic;                    -- habilita escrita no registrador de instruções
 
@@ -65,7 +67,7 @@ architecture a_UC of UC is
     signal funct_branch : unsigned(2 downto 0); -- funct específico para branches
 
     signal reg_dest_s : unsigned(3 downto 0); -- reg destino
-    signal reg_src_s  : unsigned(3 downto 0); -- reg fonte
+    signal reg_src_s  : unsigned(3 downto 0); -- reg fonte -> também vai servir para representar os bits do "registrador ponteiro" para o lw e sw
 
     -- identificação dos destinos
     signal dest_is_a1 : std_logic;
@@ -80,6 +82,8 @@ architecture a_UC of UC is
     signal is_jump : std_logic;
     signal is_beq  : std_logic;
     signal is_bge  : std_logic;
+    signal is_lw   : std_logic;
+    signal is_sw   : std_logic;
 
     signal branch_final : std_logic;
 
@@ -113,6 +117,8 @@ begin
    is_jump <=  '1' when opcode = "0011" else '0'; -- jump (pulo incondicional)
    is_beq  <= '1' when opcode = "0100" and funct_branch = "000" else '0';
    is_bge  <= '1' when opcode = "0100" and funct_branch = "001" else '0';
+   is_lw   <= '1' when opcode = "0101" else '0'; -- LW (lê da RAM para ACC)
+   is_sw   <= '1' when opcode = "0110" else '0'; -- SW (escreve de ACC na RAM)
 
    -- A1 = 1110, A2 = 1111, BR = 0000 a 1010
     dest_is_a1 <= '1' when reg_dest_s = "1110" else '0';
@@ -137,13 +143,16 @@ begin
     -- entrada dos ACCs: 01 = LD (Constante), 10 = ULA, 00 = BR (no MOV)
     sel_mux_acc_in <= "01" when is_ld = '1' else
                       "10" when (is_add = '1' or is_sub = '1') else
+                      "11" when is_lw = '1' else
                       "00";
 
     -- entrada do BR: 0 = LD (Constante), 1 = Acumulador (no MOV)
     sel_mux_br <= '0' when is_ld = '1' else '1';
 
     -- seleciona d qual acumulador ler: '0' se a fonte for A1 (1110), '1' se for A2 (1111)
-    sel_ACCs <= '1' when reg_src_s = "1111" else '0';
+    sel_ACCs <= '1' when (is_sw = '1' and reg_dest_s = "1111") else
+                '1' when (is_sw = '0' and reg_src_s = "1111") else
+                '0';
 
     -- entradas padrão da ULA sem constante de comparação
     sel_mux_ULA_br  <= '0'; 
@@ -153,9 +162,12 @@ begin
     pc_wr_en   <= '1' when estado_s = "10" else '0';
     jump_en    <= '1' when (is_jump = '1' and estado_s = "10") else '0';
 
-    wr_en_ACC1 <= '1' when (dest_is_a1 = '1' and (is_ld = '1' or is_mov = '1' or is_add = '1' or is_sub = '1') and estado_s = "10") else '0';
-    wr_en_ACC2 <= '1' when (dest_is_a2 = '1' and (is_ld = '1' or is_mov = '1' or is_add = '1' or is_sub = '1') and estado_s = "10") else '0';
+    wr_en_ACC1 <= '1' when (dest_is_a1 = '1' and (is_ld = '1' or is_mov = '1' or is_add = '1' or is_sub = '1' or is_lw = '1') and estado_s = "10") else '0';
+    wr_en_ACC2 <= '1' when (dest_is_a2 = '1' and (is_ld = '1' or is_mov = '1' or is_add = '1' or is_sub = '1' or is_lw = '1') and estado_s = "10") else '0';
     wr_en_BR   <= '1' when (dest_is_br = '1' and (is_ld = '1' or is_mov = '1') and estado_s = "10") else '0';
+
+    -- habilita gravação na RAM apenas no SW durante o estado Execute ("10")
+    wr_en_ram  <= '1' when (is_sw = '1' and estado_s = "10") else '0';
 
     -- habilitar escrita no RI no segundo estado (estado "01")
     wr_en_RI   <= '1' when estado_s = "01" else '0';

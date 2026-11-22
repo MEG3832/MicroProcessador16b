@@ -27,17 +27,17 @@ FORMATOS DE INSTRUÇÃO:
    [10..7]   Sem uso / Zeros (4 bits)
    [6..0]    Delta (7 bits) -- constante de pulo
 
-5. Formato de leitura de dados da RAM
+5. Formato de leitura de dados da RAM (LW) - lemos da RAM para ACC
    [17..14]  Opcode (4 bits)
-   [13..10]  Reg Destino (4 bits)
-   [9..6]    Reg Ponteiro (4 bits)
-   [6..0]    Sem uso / Zeros (7 bits) 
+   [13..10]  Reg Destino (4 bits)  -- Acumulador (A1 ou A2) que receberá o dado da saída da RAM
+   [9..6]    Reg Ponteiro (4 bits) -- Registrador do BR com o endereço da RAM (e que vai jogar o dado guardado neste endereço para o pino de saída)
+   [5..0]    Sem uso / Zeros (6 bits) 
 
-6. Formato de armazenamento de dados da RAM
+6. Formato de armazenamento de dados da RAM (SW) - escreve de ACC e guarda na RAM
    [17..14]  Opcode (4 bits)
-   [13..10]  Reg Fonte (4 bits)
-   [9..6]    Reg Ponteiro (4 bits)
-   [6..0]    Sem uso / Zeros (7 bits)
+   [13..10]  Reg Fonte (4 bits) -- Acumulador (A1 ou A2) com o dado a gravar
+   [9..6]    Reg Ponteiro (4 bits) -- Registrador do BR com o endereço da RAM em que será guardado o dado do acumulador
+   [5..0]    Sem uso / Zeros (7 bits)
 
 OPCODES PRINCIPAIS:
 0000 : NOP  (0x0 - Obrigatório)

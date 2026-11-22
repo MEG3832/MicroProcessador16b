@@ -20,13 +20,17 @@ entity ULA_BancReg is
             reg_wr_br: in unsigned(3 downto 0);
             reg_read_br: in unsigned(3 downto 0);
 
+            dado_ram_in: in unsigned(15 downto 0); -- entrada vinda da saída dado_out da RAM (para o LW)
+
+            out_ACC_sw: out unsigned(15 downto 0); -- saída levando o acumulador selecionado para o dado_in da RAM (para o SW)
+
             out_BR: out unsigned(15 downto 0);
             out_ACC1: out unsigned(15 downto 0);
             out_ACC2: out unsigned(15 downto 0);
             out_ULA: out unsigned(15 downto 0);
-            flag_z         : out std_logic;
-            flag_n         : out std_logic;
-            flag_v         : out std_logic
+            flag_z: out std_logic;
+            flag_n: out std_logic;
+            flag_v: out std_logic
     );
 
 end entity;
@@ -84,13 +88,14 @@ architecture a_ULA_BancReg of ULA_BancReg is
     );
     end component;
 
-    component mux_3in
+    component mux_4in
     port(
         input0: in unsigned(15 downto 0);
         input1: in unsigned(15 downto 0);
         input2: in unsigned(15 downto 0);
-        sel       : in unsigned(1 downto 0);
-        saida     : out unsigned(15 downto 0)
+        input3: in unsigned(15 downto 0);
+        sel   : in unsigned(1 downto 0);
+        saida : out unsigned(15 downto 0)
     );
     end component;
 
@@ -146,16 +151,19 @@ architecture a_ULA_BancReg of ULA_BancReg is
                                         sel => sel_mux_ULA_acc,
                                         saida => acc_ula);
 
-    mux_3in_acc_in: mux_3in port map ( input0 => br_out,
-                                      input1 => load_cte,
-                                      input2 => ula_out,
-                                      sel => sel_mux_acc_in,
-                                      saida => acc_in);
+    mux_4in_acc_in: mux_4in port map ( input0 => br_out,
+                                       input1 => load_cte,
+                                       input2 => ula_out,
+                                       input3 => dado_ram_in,
+                                       sel    => sel_mux_acc_in,
+                                       saida  => acc_in);
     
     out_BR <= br_out;
     out_ACC1 <= acc1_out;
     out_ACC2 <= acc2_out;
     out_ULA <= ula_out;
+
+    out_ACC_sw <= acc_out;
     
 
 end architecture;
