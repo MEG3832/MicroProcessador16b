@@ -14,7 +14,8 @@ entity processador is
         out_BR     : out unsigned(15 downto 0);
         out_ACC1   : out unsigned(15 downto 0);
         out_ACC2   : out unsigned(15 downto 0);
-        out_ULA    : out unsigned(15 downto 0)
+        out_ULA    : out unsigned(15 downto 0);
+        out_RAM    : out unsigned(15 downto 0)
     );
 end entity;
 
@@ -39,6 +40,7 @@ architecture a_processador of processador is
               sel_mux_acc_in : out unsigned(1 downto 0);
               sel_mux_br, sel_ACCs, sel_mux_ULA_br, sel_mux_ULA_acc : out std_logic;
               reg_wr_br, reg_read_br : out unsigned(3 downto 0);
+              wr_en_ram  : out std_logic;
               wr_en_RI   : out std_logic;
               estado_out : out unsigned(1 downto 0) );
     end component;
@@ -63,6 +65,7 @@ architecture a_processador of processador is
               sel_mux_br, sel_ACCs, sel_mux_ULA_br, sel_mux_ULA_acc : in std_logic;
               cte_comparacao : in unsigned(15 downto 0);
               reg_wr_br, reg_read_br : in unsigned(3 downto 0);
+              dado_ram_in : in unsigned(15 downto 0);
               flag_z, flag_n, flag_v : out std_logic;
               out_BR, out_ACC1, out_ACC2, out_ULA : out unsigned(15 downto 0) );
     end component;
@@ -78,6 +81,16 @@ architecture a_processador of processador is
             z_out    : out std_logic;
             n_out    : out std_logic;
             v_out    : out std_logic
+        );
+    end component;
+
+    component RAM
+        port(
+            clk      : in std_logic;
+            endereco : in unsigned(6 downto 0);
+            wr_en    : in std_logic;
+            dado_in  : in unsigned(15 downto 0);
+            dado_out : out unsigned(15 downto 0)
         );
     end component;
 
@@ -108,7 +121,12 @@ architecture a_processador of processador is
     
     signal flag_z_salva_s, flag_n_salva_s, flag_v_salva_s : std_logic; -- dados salvos saindo dos FFs indo para a UC
     
-    signal wr_en_flags_s : std_logic;             
+    signal wr_en_flags_s : std_logic; 
+    
+    signal wr_en_ram_s    : std_logic;
+    signal out_BR_s       : unsigned(15 downto 0);
+    signal out_ACC_sw_s  : unsigned(15 downto 0);
+    signal dado_ram_out_s : unsigned(15 downto 0);
 
     begin
     
@@ -166,6 +184,8 @@ architecture a_processador of processador is
         sel_mux_ULA_acc => sel_mux_ULA_acc_s,
         reg_wr_br       => reg_wr_br_s,
         reg_read_br     => reg_read_br_s,
+
+        wr_en_ram       => wr_en_ram_s,
         
         wr_en_RI        => wr_en_RI_s,
         estado_out      => estado_out
@@ -208,6 +228,8 @@ architecture a_processador of processador is
         sel_mux_ULA_acc => sel_mux_ULA_acc_s,
         reg_wr_br       => reg_wr_br_s,
         reg_read_br     => reg_read_br_s,
+
+        dado_ram_in     => dado_ram_out_s,
         
         -- constante não utilizada nas instruções atuais
         cte_comparacao  => "0000000000000000",
@@ -218,10 +240,20 @@ architecture a_processador of processador is
         flag_n          => flag_n_ula_s,
         flag_v          => flag_v_ula_s,
 
-        out_BR          => out_BR,
+        out_BR          => out_BR_s,
         out_ACC1        => out_ACC1,
         out_ACC2        => out_ACC2,
-        out_ULA         => out_ULA
+        out_ULA         => out_ULA,
+        out_ACC_sw     => out_ACC_sw_s
+    );
+    
+    -- RAM
+    inst_RAM: ram port map(
+        clk      => clk,
+        endereco => out_BR_s(6 downto 0), -- 7 bits menos significativos do registrador ponteiro
+        wr_en    => wr_en_ram_s,
+        dado_in  => out_ACC_sw_s,
+        dado_out => dado_ram_out_s
     );
 
 end architecture;

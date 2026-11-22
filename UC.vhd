@@ -153,6 +153,8 @@ begin
     sel_ACCs <= '1' when (is_sw = '1' and reg_dest_s = "1111") else
                 '1' when (is_sw = '0' and reg_src_s = "1111") else
                 '0';
+    -- *detalhe sobre isso aqui ^^ : no SW, o acumulador fonte fica nos bits [13..10] (reg_dest_s);
+    --  nos demais casos, olha reg_src_s
 
     -- entradas padrão da ULA sem constante de comparação
     sel_mux_ULA_br  <= '0'; 

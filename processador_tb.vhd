@@ -17,7 +17,8 @@ architecture a_processador_tb of processador_tb is
             out_BR     : out unsigned(15 downto 0);
             out_ACC1   : out unsigned(15 downto 0);
             out_ACC2   : out unsigned(15 downto 0);
-            out_ULA    : out unsigned(15 downto 0) 
+            out_ULA    : out unsigned(15 downto 0);
+            out_RAM : out unsigned(15 downto 0) 
         );
     end component;
 
@@ -33,6 +34,7 @@ architecture a_processador_tb of processador_tb is
     signal out_ACC1   : unsigned(15 downto 0);
     signal out_ACC2   : unsigned(15 downto 0);
     signal out_ULA    : unsigned(15 downto 0);
+    signal out_RAM    : unsigned(15 downto 0);
 
 begin
 
@@ -45,7 +47,8 @@ begin
         out_BR     => out_BR,
         out_ACC1   => out_ACC1,
         out_ACC2   => out_ACC2,
-        out_ULA    => out_ULA
+        out_ULA    => out_ULA,
+        out_RAM    => out_RAM
     );
 
     reset_global: process
