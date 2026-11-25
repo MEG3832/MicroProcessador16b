@@ -84,6 +84,7 @@ architecture a_UC of UC is
     signal is_bge  : std_logic;
     signal is_lw   : std_logic;
     signal is_sw   : std_logic;
+    signal is_and : std_logic;
 
     signal branch_final : std_logic;
 
@@ -119,6 +120,7 @@ begin
    is_bge  <= '1' when opcode = "0100" and funct_branch = "001" else '0';
    is_lw   <= '1' when opcode = "0101" else '0'; -- LW (lê da RAM para ACC)
    is_sw   <= '1' when opcode = "0110" else '0'; -- SW (escreve de ACC na RAM)
+   is_and <= '1' when opcode = "0010" and funct = "100" else '0';
 
    -- A1 = 1110, A2 = 1111, BR = 0000 a 1010
     dest_is_a1 <= '1' when reg_dest_s = "1110" else '0';
@@ -138,11 +140,12 @@ begin
     -- op na ULA (00: ADD, 01: SUB, 10: Passa)
     sel_OP_ULA <= "00" when is_add = '1' else
                   "01" when is_sub = '1' else
+                  "11" when is_and = '1' else
                   "10";
 
     -- entrada dos ACCs: 01 = LD (Constante), 10 = ULA, 00 = BR (no MOV)
     sel_mux_acc_in <= "01" when is_ld = '1' else
-                      "10" when (is_add = '1' or is_sub = '1') else
+                      "10" when (is_add = '1' or is_sub = '1' or is_and = '1') else
                       "11" when is_lw = '1' else
                       "00";
 
@@ -150,9 +153,9 @@ begin
     sel_mux_br <= '0' when is_ld = '1' else '1';
 
     -- seleciona d qual acumulador ler: '0' se a fonte for A1 (1110), '1' se for A2 (1111)
-    sel_ACCs <= '1' when (is_sw = '1' and reg_dest_s = "1111") else
-                '1' when (is_sw = '0' and reg_src_s = "1111") else
-                '0';
+    sel_ACCs <= '1' when ((is_sw = '1' or is_add = '1' or is_sub = '1' or is_and = '1') and reg_dest_s = "1111") else
+            '1' when (is_sw = '0' and is_add = '0' and is_sub = '0' and is_and = '0' and reg_src_s = "1111") else
+            '0';
     -- *detalhe sobre isso aqui ^^ : no SW, o acumulador fonte fica nos bits [13..10] (reg_dest_s);
     --  nos demais casos, olha reg_src_s
 
@@ -161,13 +164,16 @@ begin
     sel_mux_ULA_acc <= '0';
 
     -- ativar escritas ... (ocorre só no estado "10"!!)
+    
     pc_wr_en   <= '1' when estado_s = "10" else '0';
     jump_en    <= '1' when (is_jump = '1' and estado_s = "10") else '0';
 
-    wr_en_ACC1 <= '1' when (dest_is_a1 = '1' and (is_ld = '1' or is_mov = '1' or is_add = '1' or is_sub = '1' or is_lw = '1') and estado_s = "10") else '0';
-    wr_en_ACC2 <= '1' when (dest_is_a2 = '1' and (is_ld = '1' or is_mov = '1' or is_add = '1' or is_sub = '1' or is_lw = '1') and estado_s = "10") else '0';
-    wr_en_BR   <= '1' when (dest_is_br = '1' and (is_ld = '1' or is_mov = '1') and estado_s = "10") else '0';
+    wr_en_ACC1  <= '1' when (dest_is_a1 = '1' and (is_ld = '1' or is_mov = '1' or is_add = '1' or is_sub = '1' or is_and = '1' or is_lw = '1') and estado_s = "10") else '0';
+    wr_en_ACC2  <= '1' when (dest_is_a2 = '1' and (is_ld = '1' or is_mov = '1' or is_add = '1' or is_sub = '1' or is_and = '1' or is_lw = '1') and estado_s = "10") else '0';
+    wr_en_BR <= '1' when (dest_is_br = '1' and (is_ld = '1' or is_mov = '1') and estado_s = "10") else '0';
+    wr_en_flags <= '1' when ((is_add = '1' or is_sub = '1' or is_and = '1') and estado_s = "10") else '0';
 
+    
     -- habilita gravação na RAM apenas no SW durante o estado Execute ("10")
     wr_en_ram  <= '1' when (is_sw = '1' and estado_s = "10") else '0';
 
@@ -181,9 +187,6 @@ begin
                      '0';
 
     branch_en <= '1' when (branch_final = '1' and estado_s = "10") else '0';
-
-    wr_en_flags <= '1' when ((is_add = '1' or is_sub = '1') and estado_s = "10") else '0'; -- habilita escrita nos FFs das flags (apenas em soma e sub)
-
 
 
 end architecture;
